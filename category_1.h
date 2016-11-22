@@ -10,11 +10,11 @@ class category_1{
     public:
         category_1();
         ~category_1();
-        bool getCode(char*,int,int,simulation* sim,int,ArrayList*);
+        bool getCode(char*,int,int,simulation* sim,int,ArrayList*,ofstream&);
         string getOpcode(char* opcode);
         int getBase(char*base);
         int getOffset(char* offset);
-        void show_category1(string ,int,int,int,int);
+        void show_category1(string ,int,int,int,int,ofstream&);
 
     private:
         char* opCode;
@@ -24,4 +24,3 @@ class category_1{
 };
 
 #endif // CATEGORY_1_H
-
