@@ -2,7 +2,15 @@
 #include <iostream>
 #include <stdlib.h>     /* atoi */
 #include <math.h>       /* pow */
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::ios;
 
+#include<fstream>
+using std::ifstream;
+using std::ofstream;
 using namespace std;
 
 category_2::category_2(){
@@ -19,7 +27,7 @@ category_2::~category_2(){
     delete opCode;
 }
 
-void category_2::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists){
+void category_2::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists,ofstream& mysavefile_inst){
 
     int dest_count = 0;
     int src1_count = 0;
@@ -51,14 +59,17 @@ void category_2::getCode(char* inst,int inst_size,int address,simulation* sim, i
     int src2_result = convertToDecimal(this->src2);
 
     if(writeReg == -2){
+	for(int i =0;i<32;i++)
+	     mysavefile_inst<<inst[i];
+	     mysavefile_inst<<"\t";
         lists->createList(opcode_result,0,0,0,dest_result,src1_result,src2_result,0,0,lists,address);
-        show_category2(opcode_result,dest_result,src1_result,src2_result,address);
+        show_category2(opcode_result,dest_result,src1_result,src2_result,address,mysavefile_inst);
     }
 }
 
-void category_2::show_category2(string opcode_result, int dest_result,int src1_result,int src2_result,int address){
-    std::cout<<address<<"\t";
-    std::cout<<opcode_result<<" R"<<dest_result<<", R"<<src1_result<<", R"<<src2_result<<"\n";
+void category_2::show_category2(string opcode_result, int dest_result,int src1_result,int src2_result,int address,ofstream& mysavefile_inst){
+    mysavefile_inst<<address<<"\t";
+    mysavefile_inst<<opcode_result<<" R"<<dest_result<<", R"<<src1_result<<", R"<<src2_result<<"\n";
 }
 
 int category_2::convertToDecimal(char* arr){
@@ -105,4 +116,3 @@ string category_2::getOpcode(char* opcode){
 
     }
 }///end of getOpcode
-
