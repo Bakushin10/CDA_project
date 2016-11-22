@@ -5,6 +5,15 @@
 #include <string>
 using namespace std;
 
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::ios;
+
+#include<fstream>
+using std::ifstream;
+using std::ofstream;
 
 category_3::category_3(){
     this->dest = new char[5];
@@ -22,7 +31,7 @@ category_3::~category_3(){
     delete sa;
 }
 
-void category_3::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists){
+void category_3::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists,ofstream& mysavefile_inst){
 
     int dest_count = 0;
     int src1_count = 0;
@@ -60,18 +69,21 @@ void category_3::getCode(char* inst,int inst_size,int address,simulation* sim, i
     int sa_result = convertToDecimal(this->sa);
 
     if(writeReg == -2){
+	for(int i =0;i<32;i++)
+	     mysavefile_inst<<inst[i];
+	     mysavefile_inst<<"\t";
         lists->createList(opcode_result,0,0,0,dest_result,src1_result,0,immi_result,sa_result,lists,address);
-        show_category3(opcode_result,dest_result,src1_result,immi_result,address,sa_result);
+        show_category3(opcode_result,dest_result,src1_result,immi_result,address,sa_result,mysavefile_inst);
     }
 }
 
-void category_3::show_category3(string opcode_result, int dest_result,int src1_result,int immi_result,int address,int sa_result){
-    std::cout<<address<<"\t";
+void category_3::show_category3(string opcode_result, int dest_result,int src1_result,int immi_result,int address,int sa_result,ofstream& mysavefile_inst){
+    mysavefile_inst<<address<<"\t";
 
     if(opcode_result.compare("SRL")==0  || opcode_result.compare("SRA") == 0 || opcode_result.compare("SLL") == 0  ){
-        std::cout<<opcode_result<<" R"<<dest_result<<", R"<<src1_result<<", #"<<sa_result<<"\n";
+        mysavefile_inst<<opcode_result<<" R"<<dest_result<<", R"<<src1_result<<", #"<<sa_result<<"\n";
     }else
-        std::cout<<opcode_result<<" R"<<dest_result<<", R"<<src1_result<<", #"<<immi_result<<"\n";
+        mysavefile_inst<<opcode_result<<" R"<<dest_result<<", R"<<src1_result<<", #"<<immi_result<<"\n";
 
 }
 
@@ -150,6 +162,5 @@ string category_3::getOpcode(char* opcode){
 
     }
 }///end of getOpcode
-
 
 
