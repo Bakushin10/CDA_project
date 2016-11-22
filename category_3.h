@@ -10,10 +10,10 @@ class category_3{
         category_3();
         ~category_3();
         int convertToDecimal(char* arr);
-        void getCode(char*,int,int,simulation*,int,ArrayList* );
+        void getCode(char*,int,int,simulation*,int,ArrayList*,ofstream&);
         string getOpcode(char*);
         int convertToDecimal_16bits(string);
-        void show_category3(string,int,int,int,int,int);
+        void show_category3(string,int,int,int,int,int,ofstream&);
 
     private:
         static int const r_len = 5;
@@ -25,4 +25,3 @@ class category_3{
 };
 
 #endif // CATEGORY_3_H
-
