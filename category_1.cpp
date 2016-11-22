@@ -3,7 +3,15 @@
 #include <string.h>
 #include <math.h>       /* pow */
 #include <iostream>
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::ios;
 
+#include<fstream>
+using std::ifstream;
+using std::ofstream;
 using namespace std;
 
 category_1::category_1(){
@@ -20,7 +28,7 @@ category_1::~category_1(){
 }
 
 
-bool category_1::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists){
+bool category_1::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists,ofstream& mysavefile_inst){
 
     int op_count = 0;
     int base_count = 0;
@@ -51,17 +59,21 @@ bool category_1::getCode(char* inst,int inst_size,int address,simulation* sim, i
     int base_total = getBase(base);
     int rt_result = getBase(rt);///same as get base function
     int offset_result = getOffset(offset);
-     //std::cout<<"inst    : "<<inst<<"\n";
-   // std::cout<<"opcode  : "<<opCode<<" : "<<opcode_result<<"\n";
-    //std::cout<<"base    : "<<base<<" : "<<base_total<<"\n";
-    //std::cout<<"rt      : "<<rt<<" : "<<rt_result<<"\n";
-   // std::cout<<"offset  : "<<offset_result<<"\n\n";
+     //mysavefile_inst<<"inst    : "<<inst<<"\n";
+   // mysavefile_inst<<"opcode  : "<<opCode<<" : "<<opcode_result<<"\n";
+    //mysavefile_inst<<"base    : "<<base<<" : "<<base_total<<"\n";
+    //mysavefile_inst<<"rt      : "<<rt<<" : "<<rt_result<<"\n";
+   // mysavefile_inst<<"offset  : "<<offset_result<<"\n\n";
     ///getOpcode
 
     if(writeReg == -2){
+	for(int i =0;i<32;i++)
+	     mysavefile_inst<<inst[i];
+	     mysavefile_inst<<"\t";
         lists->createList(opcode_result,base_total,rt_result,offset_result,0,0,0,0,0,lists,address);
-        show_category1(opcode_result,base_total,rt_result,offset_result,address);
+        show_category1(opcode_result,base_total,rt_result,offset_result,address,mysavefile_inst);
     }
+
     if(opcode_result.compare("BREAK") == 0)
         return true;
 
@@ -69,43 +81,43 @@ bool category_1::getCode(char* inst,int inst_size,int address,simulation* sim, i
 
 }
 
-void category_1::show_category1(string opcode_result,int base_result, int rt_result,int offset_result,int address){
+void category_1::show_category1(string opcode_result,int base_result, int rt_result,int offset_result,int address,ofstream& mysavefile_inst){
 
         int const nextAdder = 4;
-        std::cout<<address<<"\t";///show current address
+        mysavefile_inst<<address<<"\t";///show current address
 
         switch(atoi(this->opCode)){
         case 0 :{
-            std::cout<<"NOP"<<"\n";
+            mysavefile_inst<<"NOP"<<"\n";
             break;
         }
         case 1:{
             int jumpTo = nextAdder*offset_result;
-            std::cout<<opcode_result<<" #"<<jumpTo<<"\n";
+            mysavefile_inst<<opcode_result<<" #"<<jumpTo<<"\n";
             break;
         }
         case 10:{
-            std::cout<<opcode_result<<" R"<<base_result<<", R"<<rt_result<<", #"<<offset_result<<"\n";
+            mysavefile_inst<<opcode_result<<" R"<<base_result<<", R"<<rt_result<<", #"<<offset_result<<"\n";
             break;
         }
         case 11:{
-            std::cout<<opcode_result<<" R"<<base_result<<", R"<<rt_result<<", #"<<offset_result<<"\n";
+            mysavefile_inst<<opcode_result<<" R"<<base_result<<", R"<<rt_result<<", #"<<offset_result<<"\n";
             break;
         }
         case 100:{
-            std::cout<<opcode_result<<" R"<<base_result<<", #"<<offset_result<<"\n";
+            mysavefile_inst<<opcode_result<<" R"<<base_result<<", #"<<offset_result<<"\n";
             break;
         }
         case 101:{
-            std::cout<<opcode_result<<" R"<<rt_result<<", "<<offset_result<<"(R"<<base_result<<")\n";
+            mysavefile_inst<<opcode_result<<" R"<<rt_result<<", "<<offset_result<<"(R"<<base_result<<")\n";
             break;
         }
         case 110:{
-            std::cout<<opcode_result<<" R"<<rt_result<<", "<<offset_result<<"(R"<<base_result<<")\n";
+            mysavefile_inst<<opcode_result<<" R"<<rt_result<<", "<<offset_result<<"(R"<<base_result<<")\n";
             break;
         }
         case 111:{
-            std::cout<<"BREAK\n";
+            mysavefile_inst<<"BREAK\n";
         }
 
     }
@@ -186,4 +198,3 @@ string category_1::getOpcode(char* opcode){
 
     }
 }///end of getOpcode
-
