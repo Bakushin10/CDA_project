@@ -4,16 +4,25 @@
 #include <string.h>
 #include <math.h>       /* pow */
 #include <iostream>
+#include "simulation.h"
 using namespace std;
 
 class ArrayList{
     public:
         ArrayList();
         ~ArrayList();
-        void createList(string opcode,int base,int rt,int offset,int dest,int src1,int src2, int immi,int sa, ArrayList* lists,int i);
+        void createList(string,int,int,int,int,int,int, int,int, ArrayList*,int);
         void init(int,ArrayList*);
         void showVariblesInArray(ArrayList*lists);
-
+        void executeInstruction(simulation*,ArrayList*,int,ofstream&);
+        void showRegister(int*,int,ofstream&);
+        int doExecution(simulation*,ArrayList*,int,int*,int);
+        int* decimalToBinary(ArrayList* ,int,int,int);
+        int XORI(int*,int*,int);
+        int ORI(int*,int*,int);
+        void displayInstruction(ArrayList*,int,ofstream&);
+        int SRA(int*registers,int shift,int);
+        int AND(int*a,int*b,int array_size);
     private:
         string opcode;
         int address;
@@ -28,4 +37,3 @@ class ArrayList{
 };
 
 #endif // ARRAYLIST_H
-
