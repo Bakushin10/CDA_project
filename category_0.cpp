@@ -2,7 +2,14 @@
 #include <iostream>
 #include <stdlib.h>     /* atoi */
 #include <math.h>       /* pow */
+#include <iostream>
+using std::cin;
+using std::endl;
+using std::ios;
 
+#include<fstream>
+using std::ifstream;
+using std::ofstream;
 using namespace std;
 
 category_0::category_0(){
@@ -13,7 +20,7 @@ category_0::~category_0(){
     delete immi;
 }
 
-void category_0::getCode(char* inst,int inst_size,int address,simulation* sim,int regSize,bool writeReg){
+void category_0::getCode(char* inst,int inst_size,int address,simulation* sim,int regSize,bool writeReg,ofstream& mysavefile_inst){
 
     int immi_count = 0;
     for(int i = 0;i<inst_size;i++){
@@ -25,15 +32,18 @@ void category_0::getCode(char* inst,int inst_size,int address,simulation* sim,in
 
     int num = convertToDecimal_16bits(inst);
 
-    if(regSize == -2)
-        show_category_0(num,address);
-
+    if(regSize == -2){
+	for(int i =0;i<32;i++)
+	     mysavefile_inst<<inst[i];
+	     mysavefile_inst<<"\t";
+        show_category_0(num,address,mysavefile_inst);
+      }
     if(writeReg)
         sim->updateRegisters(num);
 }
 
-void category_0::show_category_0(int num, int address){
-    std::cout<<address<<"\t"<<num<<"\n";
+void category_0::show_category_0(int num, int address,ofstream& mysavefile_inst){
+    mysavefile_inst<<address<<"\t"<<num<<"\n";
 }
 
 int category_0::convertToDecimal_16bits(char* inst){
@@ -60,4 +70,3 @@ int category_0::convertToDecimal_16bits(char* inst){
     return sum;
 
 }
-
