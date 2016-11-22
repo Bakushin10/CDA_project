@@ -15,11 +15,16 @@ int const category_size = 3;///size of category
 bool isEmpty(std::istream& );
 void clearArray(char* ,int &j);
 char* selectCategory(char*);
-int display(ifstream&,int,int,simulation*,ArrayList*);///get the category code and deal with the instruction
+int display(ifstream&,int,int,simulation*,ArrayList*,ofstream&);///get the category code and deal with the instruction
+
 
 int main(int argc,char** argv){
 
     ifstream myfile,myfile2,myfile3;
+    ofstream mysavefile_inst;
+    ofstream mysavefile_sim;    
+    mysavefile_inst.open("disassembly.txt");
+    mysavefile_sim.open("simulator.txt");
     int address = 64;///by default, the program always starts from address 64
     int regSize = 0;
     int arraySize = 0;
@@ -31,31 +36,34 @@ int main(int argc,char** argv){
     ArrayList* lists;
 
     if(!isEmpty(myfile))
-        regSize = display(myfile,address,0,sim,lists);
+        regSize = display(myfile,address,0,sim,lists,mysavefile_inst);
         myfile.close();
 
     sim->setReg(regSize);
-    std::cout<<"reg size = "<<regSize<<std::endl;
+//    std::cout<<"reg size = "<<regSize<<std::endl;
     if(!isEmpty(myfile2))
-        arraySize = display(myfile2,address,-1,sim,lists)+1;
-    std::cout<<"array size = "<<arraySize<<std::endl;
+        arraySize = display(myfile2,address,-1,sim,lists,mysavefile_inst)+1;
+//    std::cout<<"array size = "<<arraySize<<std::endl;
+    sim->setdata_starting_address(arraySize,address);
 
     lists = new ArrayList[arraySize];///create the list
     lists->init(arraySize,lists);///set all variables to 0
 
     if(!isEmpty(myfile3))
-        display(myfile3,address,-2,sim,lists);
-        
-     lists->showVariblesInArray(lists);
+        display(myfile3,address,-2,sim,lists,mysavefile_inst);
+
+ //    lists->showVariblesInArray(lists);
+     lists->executeInstruction(sim,lists,address,mysavefile_sim);
+
 
     myfile.close();
     myfile2.close();
     myfile3.close();
-    std::cout<<"\nEnd "<<std::endl;
+
     return 0;
 }
 
-int display(ifstream& myfile,int address,int regSize,simulation* sim,ArrayList* lists){
+int display(ifstream& myfile,int address,int regSize,simulation* sim,ArrayList* lists,ofstream& mysavefile_inst){
 
     int i = 0;
     char a;
@@ -69,8 +77,6 @@ int display(ifstream& myfile,int address,int regSize,simulation* sim,ArrayList* 
     if(regSize == -1)
         isArraySize = true;
 
-
-
     while(!myfile.eof()){
 
         if(i == inst_size){
@@ -78,24 +84,24 @@ int display(ifstream& myfile,int address,int regSize,simulation* sim,ArrayList* 
             //std::cout<<"atoi : "<<atoi(category)<<"\n";
             switch(atoi(category)){
                 case 1:{
-                    if(cate_1->getCode(inst,inst_size,address,sim,regSize,lists) && regSize != -2)///for display to work
+                    if(cate_1->getCode(inst,inst_size,address,sim,regSize,lists,mysavefile_inst) && regSize != -2)///for display to work
                         reg_increment = true;
                     break;
                 }
                 case 10:{///atoi recoganizes 010 as 10
-                    cate_2->getCode(inst,inst_size,address,sim,regSize,lists);
+                    cate_2->getCode(inst,inst_size,address,sim,regSize,lists,mysavefile_inst);
                     break;
                 }
                 case 100:{///when category is 100
-                    cate_3->getCode(inst,inst_size,address,sim,regSize,lists);
+                    cate_3->getCode(inst,inst_size,address,sim,regSize,lists,mysavefile_inst);
                     break;
                 }
                 case 0:{///when category is 000
-                    cate_0->getCode(inst,inst_size,address,sim,regSize,isArraySize);
+                    cate_0->getCode(inst,inst_size,address,sim,regSize,isArraySize,mysavefile_inst);
                     break;
                 }
                 case 111:{///when category is 111
-                    cate_0->getCode(inst,inst_size,address,sim,regSize,isArraySize);
+                    cate_0->getCode(inst,inst_size,address,sim,regSize,isArraySize,mysavefile_inst);
                     break;
                 }
             }
@@ -114,10 +120,7 @@ int display(ifstream& myfile,int address,int regSize,simulation* sim,ArrayList* 
         i++;
     }
 
-    if(regSize == -2){
-        sim->showRegister();
-        std::cout<<"\n";
-	}
+
     ///free up memories
     cate_1->~category_1();
     cate_2->~category_2();
@@ -148,4 +151,3 @@ bool isEmpty(std::istream& pFile){
     ///checks if the file is empty
     return pFile.peek() == std::ifstream::traits_type::eof();
 }
-
