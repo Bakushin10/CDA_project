@@ -1,3 +1,21 @@
 # CDA_project
 
 Convert given 32 bits binary to mips instructions and simulate it.
+
+
+download it and extract the file.
+
+
+type       cd CDA_project-master
+and type   make
+
+this will create the execution file called 'main'
+
+to run the test case type 
+          ./main in.txt
+
+this will create the simulator.txt and disassembly.txt
+Open the file to see how the test case was converted to SIMP instructions.
+
+
+    
