@@ -1,4 +1,5 @@
-** CDA_project **
+MIPS_Converter
+===
 
 Convert given 32 bits binary to mips instructions and simulate it.
 
@@ -6,8 +7,8 @@ Convert given 32 bits binary to mips instructions and simulate it.
 download it and extract the file.
 
 
-type       cd CDA_project-master
-and type   make
+make sure you are in the right repository       
+<p>cd CDA_project-master</p>   
 
 this will create the execution file called 'main'
 
