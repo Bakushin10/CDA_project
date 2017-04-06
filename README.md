@@ -8,12 +8,12 @@ download it and extract the file.
 
 
 make sure you are in the right repository       
-<p>cd CDA_project-master</p>   
+```cd CDA_project-master```   
 
 this will create the execution file called 'main'
 
 to run the test case type 
-          ./main in.txt
+          ```./main in.txt```
 
 this will create the simulator.txt and disassembly.txt
 disassembly.txt converts the in.txt to assembly code.
