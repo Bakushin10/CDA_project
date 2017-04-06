@@ -15,7 +15,8 @@ to run the test case type
           ./main in.txt
 
 this will create the simulator.txt and disassembly.txt
-Open the file to see how the test case was converted to SIMP instructions.
+disassembly.txt converts the in.txt to assembly code.
+simulator.txt is the sumulation of assembly code in disassembly.txt.
 
 
     
