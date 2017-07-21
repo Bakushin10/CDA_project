@@ -29,7 +29,7 @@ category_1::~category_1(){
 
 
 bool category_1::getCode(char* inst,int inst_size,int address,simulation* sim, int writeReg,ArrayList* lists,ofstream& mysavefile_inst){
-	//this is a test for diff
+
     int op_count = 0;
     int base_count = 0;
     int rt_count = 0;
