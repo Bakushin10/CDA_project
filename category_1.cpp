@@ -65,11 +65,7 @@ bool category_1::getCode(char* inst,int inst_size,int address,simulation* sim, i
     //mysavefile_inst<<"rt      : "<<rt<<" : "<<rt_result<<"\n";
    // mysavefile_inst<<"offset  : "<<offset_result<<"\n\n";
     ///getOpcode
-	/*
-	 this is for demo purposes
-	
-	
-	*/
+
     if(writeReg == -2){
 	for(int i =0;i<32;i++)
 	     mysavefile_inst<<inst[i];
