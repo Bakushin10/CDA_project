@@ -20,6 +20,7 @@ class category_2{
         char* src1;
         char* src2;
         char* opCode;
+	char name;
 };
 
 #endif // CATEGORY_2_H
