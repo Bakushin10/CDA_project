@@ -8,7 +8,7 @@ download it and extract the file.
 
 
 make sure you are in the right repository       
-```cd CDA_project-master```   
+```cd CDA_project```   
 
 type ```make``` to run the makefile
 this will create the execution file called 'main'
