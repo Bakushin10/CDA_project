@@ -4,7 +4,7 @@ MIPS_Converter
 Convert given 32 bits binary to mips instructions and simulate it.
 
 
-download it and extract the file.
+download it using ```git clone```.
 
 
 make sure you are in the right repository       
